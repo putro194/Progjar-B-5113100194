@@ -1,0 +1,34 @@
+import sys, socket
+
+HOST = 'localhost'
+RECV_BUFFER = 4096
+PORT = 9999
+
+# Create a TCP/IP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+# Bind the socket to the port
+server_socket.bind((HOST, PORT))
+
+# Listen for incoming connections
+server_socket.listen(5)
+
+print "Connection to localhost... port " + str(PORT) 
+
+while True:
+        # Wait for a connection
+        connection, client_address = server_socket.accept()
+        print >>sys.stderr, 'Connection from', client_address, '\n'
+
+        # Make a file for send to a user
+        req_recv = connection.recv(RECV_BUFFER)
+        data = "Selamat Datang Pada:\nCoba Buat WebServer Sederhana ^_^\nTerimakasih..."
+        data2 = "200-OK !"
+
+        # View data to user and server
+        connection.send(data)
+        print (data2)
+        
+        # Clean up the connection
+        connection.close()
